@@ -4,6 +4,7 @@ updatetime = 0
 
 smallBlast = nil
 explosions = {}
+touches = {}
 
 sounds = {
     love.audio.newSource("assets/Menu_Navigate_00.mp3", "static"),
@@ -52,9 +53,9 @@ end
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
 
-    if love.audio.getActiveSourceCount() == 0 then
-        sounds[math.random(1, #sounds)]:play()
-    end
+    touch = {id = id, sound = sounds[math.random(1, #sounds)], x = x, y = y}
+    love.audio.play(touch.sound)
+    touches[id] = touch
 
     local explosion = getExplosion(smallBlast)
     explosion:setPosition(x, y)
@@ -66,9 +67,7 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
     -- print("Touch Moved" .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " ..
     --           pressure)
 
-    if love.audio.getActiveSourceCount() == 0 then
-        sounds[math.random(1, #sounds)]:play()
-    end
+    love.audio.play(touches[id].sound)
 
     local explosion = getExplosion(smallBlast)
     explosion:setPosition(x, y)
@@ -79,7 +78,7 @@ end
 function love.touchreleased(id, x, y, dx, dy, pressure)
     -- print("Touch Released" .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " ..
     --           pressure)
-
+    touches[id] = nil
 end
 
 function getBlast(size)
