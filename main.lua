@@ -1,9 +1,17 @@
-debug = true
+debug = false
 
 updatetime = 0
 
 smallBlast = nil
 explosions = {}
+
+sounds = {
+    love.audio.newSource("assets/Menu_Navigate_00.mp3", "static"),
+    love.audio.newSource("assets/Climb_Rope_Loop_00.mp3", "static"),
+    love.audio.newSource("assets/Collect_Point_00.mp3", "static"),
+    love.audio.newSource("assets/Hit_00.mp3", "static")
+
+}
 
 function love.load(arg)
     print("Touch it!")
@@ -21,20 +29,32 @@ function love.update(dt)
     updateExplosions(dt)
 end
 
+function love.keypressed(key, scancode, isrepeat)
+    if key == 'd' and not isrepeat then
+        debug = not debug
+    end
+end
+
 function love.draw()
     love.graphics.setColor(1, 1, 1)
 
     for i, explosion in ipairs(explosions) do
-        love.graphics.draw(explosion, 0,0)
+        love.graphics.draw(explosion, 0, 0)
     end
 
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print("DT: " .. tostring(updatetime), 0, 0)
-    love.graphics.print("FPS: " .. tostring(1.0 / updatetime), 0, 10)
+    if debug then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.print("DT: " .. tostring(updatetime), 0, 0)
+        love.graphics.print("FPS: " .. tostring(1.0 / updatetime), 0, 10)
+    end
 end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
+
+    if love.audio.getActiveSourceCount() == 0 then
+        sounds[math.random(1, #sounds)]:play()
+    end
 
     local explosion = getExplosion(smallBlast)
     explosion:setPosition(x, y)
@@ -45,6 +65,10 @@ end
 function love.touchmoved(id, x, y, dx, dy, pressure)
     -- print("Touch Moved" .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " ..
     --           pressure)
+
+    if love.audio.getActiveSourceCount() == 0 then
+        sounds[math.random(1, #sounds)]:play()
+    end
 
     local explosion = getExplosion(smallBlast)
     explosion:setPosition(x, y)
@@ -77,11 +101,10 @@ function getExplosion(image)
 end
 
 function updateExplosions(dt)
-    for i = table.getn(explosions), 1, -1 do
-      local explosion = explosions[i]
-      explosion:update(dt)
-      if explosion:getCount() == 0 then
-        table.remove(explosions, i)
-      end
+    for i, explosion in ipairs(explosions) do
+        explosion:update(dt)
+        if explosion:getCount() == 0 then
+            table.remove(explosions, i)
+        end
     end
-  end
+end
