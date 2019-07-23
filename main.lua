@@ -2,7 +2,6 @@ debug = true
 
 updatetime = 0
 
-smallBlast = nil
 explosions = {}
 touches = {}
 
@@ -16,8 +15,6 @@ sounds = {
 
 function love.load(arg)
     print("Touch it!")
-
-    smallBlast = getBlast(100)
 end
 
 function love.update(dt)
@@ -53,11 +50,34 @@ end
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
 
-    touch = {id = id, sound = sounds[math.random(1, #sounds)], x = x, y = y}
+    touch = {
+        id = id,
+        sound = sounds[math.random(1, #sounds)],
+        x = x,
+        y = y,
+        trails = {
+            color1 = {
+                r = math.random(),
+                g = math.random(),
+                b = math.random()
+            },
+            color2 = {
+                r = math.random(),
+                g = math.random(),
+                b = math.random()
+            },
+            color3 = {
+                r = math.random(),
+                g = math.random(),
+                b = math.random()
+            }
+        }
+    }
     love.audio.play(touch.sound)
     touches[id] = touch
 
-    local explosion = getExplosion(smallBlast)
+    touch.blast = getBlast(100, touch.trails.color1)
+    local explosion = getExplosion(touch.blast, touch.trails)
     explosion:setPosition(x, y)
     explosion:emit(10)
     table.insert(explosions, explosion)
@@ -69,7 +89,7 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
 
     love.audio.play(touches[id].sound)
 
-    local explosion = getExplosion(smallBlast)
+    local explosion = getExplosion(touch.blast, touches[id].trails)
     explosion:setPosition(x, y)
     explosion:emit(10)
     table.insert(explosions, explosion)
@@ -81,20 +101,22 @@ function love.touchreleased(id, x, y, dx, dy, pressure)
     touches[id] = nil
 end
 
-function getBlast(size)
+function getBlast(size, color)
     local blast = love.graphics.newCanvas(size, size)
     love.graphics.setCanvas(blast)
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(color.r, color.g, color.b, 255)
     love.graphics.circle("fill", size / 2, size / 2, size / 2)
     love.graphics.setCanvas()
     return blast
 end
 
-function getExplosion(image)
+function getExplosion(image, colors)
     pSystem = love.graphics.newParticleSystem(image, 300)
     pSystem:setParticleLifetime(0.5, 0.5)
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
-    pSystem:setColors(255, 255, 0, 255, 255, 153, 51, 255, 64, 64, 64, 0)
+    pSystem:setColors(colors.color1.r, colors.color1.g, colors.color1.b, 255,
+                      colors.color2.r, colors.color2.g, colors.color2.b, 255,
+                      colors.color3.r, colors.color3.g, colors.color3.b, 0)
     pSystem:setSizes(1, 0.1)
     return pSystem
 end
