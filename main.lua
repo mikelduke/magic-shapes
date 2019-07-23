@@ -1,4 +1,4 @@
-debug = false
+debug = true
 
 updatetime = 0
 
@@ -10,8 +10,8 @@ sounds = {
     love.audio.newSource("assets/Menu_Navigate_00.mp3", "static"),
     love.audio.newSource("assets/Climb_Rope_Loop_00.mp3", "static"),
     love.audio.newSource("assets/Collect_Point_00.mp3", "static"),
-    love.audio.newSource("assets/Hit_00.mp3", "static")
-
+    love.audio.newSource("assets/Hit_00.mp3", "static"),
+    love.audio.newSource("assets/Jump_00.mp3", "static")
 }
 
 function love.load(arg)
