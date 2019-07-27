@@ -5,6 +5,8 @@ updatetime = 0
 explosions = {}
 touches = {}
 
+mousedown = false
+
 sounds = {
     love.audio.newSource("assets/Menu_Navigate_00.mp3", "static"),
     love.audio.newSource("assets/Climb_Rope_Loop_00.mp3", "static"),
@@ -47,6 +49,26 @@ function love.draw()
     end
 end
 
+function love.mousepressed(x, y, button, istouch, presses)
+    if not istouch then
+        mousedown = true
+        love.touchpressed("mouse", x, y, 0, 0, 0)
+    end
+end
+
+function love.mousemoved(x, y, dx, dy, istouch)
+    if not istouch and mousedown then
+        love.touchmoved("mouse", x, y, 0, 0, 0)
+    end
+end
+
+function love.mousereleased(x, y, button, istouch, presses)
+    if not istouch and mousedown then
+        mousedown = false
+        love.touchreleased("mouse", x, y, 0, 0, 0)
+    end
+end
+
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
 
@@ -56,21 +78,9 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
         x = x,
         y = y,
         trails = {
-            color1 = {
-                r = math.random(),
-                g = math.random(),
-                b = math.random()
-            },
-            color2 = {
-                r = math.random(),
-                g = math.random(),
-                b = math.random()
-            },
-            color3 = {
-                r = math.random(),
-                g = math.random(),
-                b = math.random()
-            }
+            color1 = {r = math.random(), g = math.random(), b = math.random()},
+            color2 = {r = math.random(), g = math.random(), b = math.random()},
+            color3 = {r = math.random(), g = math.random(), b = math.random()}
         }
     }
     love.audio.play(touch.sound)
