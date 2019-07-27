@@ -86,10 +86,11 @@ end
 function love.touchmoved(id, x, y, dx, dy, pressure)
     -- print("Touch Moved" .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " ..
     --           pressure)
+    local touch = touches[id]
 
-    love.audio.play(touches[id].sound)
+    love.audio.play(touch.sound)
 
-    local explosion = getExplosion(touch.blast, touches[id].trails)
+    local explosion = getExplosion(touch.blast, touch.trails)
     explosion:setPosition(x, y)
     explosion:emit(10)
     table.insert(explosions, explosion)
@@ -111,7 +112,7 @@ function getBlast(size, color)
 end
 
 function getExplosion(image, colors)
-    pSystem = love.graphics.newParticleSystem(image, 300)
+    pSystem = love.graphics.newParticleSystem(image, 10)
     pSystem:setParticleLifetime(0.5, 0.5)
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
     pSystem:setColors(colors.color1.r, colors.color1.g, colors.color1.b, 255,
