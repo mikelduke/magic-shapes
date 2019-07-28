@@ -43,11 +43,11 @@ function love.draw()
 
         if debug then
             if touches[explosion.id] ~= nil then
-                love.graphics.draw(touches[explosion.id].blast, touch.x,
+                love.graphics.draw(touches[explosion.id].shape, touch.x,
                                    touch.y, 0, explosion.explosion:getSizes(),
                                    explosion.explosion:getSizes(),
-                                   touches[explosion.id].blast:getWidth() / 2,
-                                   touches[explosion.id].blast:getHeight() / 2)
+                                   touches[explosion.id].shape:getWidth() / 2,
+                                   touches[explosion.id].shape:getHeight() / 2)
             end
         end
     end
@@ -96,8 +96,8 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     love.audio.play(touch.sound)
     touches[id] = touch
 
-    touch.blast = getBlast(100, touch.trails.color1)
-    local explosion = getExplosion(touch.blast, touch.trails)
+    touch.shape = getShape(100, touch.trails.color1)
+    local explosion = getExplosion(touch.shape, touch.trails)
     explosion:setPosition(x, y)
     explosion:setEmissionRate(20)
     touchExplosion = {explosion = explosion, id = id} -- wrapper table
@@ -123,13 +123,13 @@ function love.touchreleased(id, x, y, dx, dy, pressure)
     touches[id] = nil
 end
 
-function getBlast(size, color)
-    local blast = love.graphics.newCanvas(size, size)
-    love.graphics.setCanvas(blast)
+function getShape(size, color)
+    local shape = love.graphics.newCanvas(size, size)
+    love.graphics.setCanvas(shape)
     love.graphics.setColor(color.r, color.g, color.b, 255)
     love.graphics.circle("fill", size / 2, size / 2, size / 2)
     love.graphics.setCanvas()
-    return blast
+    return shape
 end
 
 function getExplosion(image, colors)
