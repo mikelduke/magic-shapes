@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "removing dist folder"
+echo "removing temp folder"
 rm -rf temp
