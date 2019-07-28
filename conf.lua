@@ -6,5 +6,6 @@ function love.conf(t)
     -- t.window.height = 800
     t.window.resizable = true
     t.window.fullscreen = true
-    t.window.fullscreentype = desktop
+    t.window.fullscreentype = exclusive
+    t.window.borderless = true
 end
