@@ -89,7 +89,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     touch.blast = getBlast(100, touch.trails.color1)
     local explosion = getExplosion(touch.blast, touch.trails)
     explosion:setPosition(x, y)
-    explosion:emit(10)
+    explosion:emit(1)
     touchExplosion = {explosion = explosion, id = id} -- wrapper table
     table.insert(explosions, touchExplosion)
     touch.explosion = explosion
@@ -103,7 +103,7 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
 
     love.audio.play(touch.sound)
     touch.explosion:setPosition(x, y)
-    touch.explosion:emit(10)
+    touch.explosion:emit(1)
 end
 
 function love.touchreleased(id, x, y, dx, dy, pressure)
@@ -125,6 +125,7 @@ function getExplosion(image, colors)
     pSystem = love.graphics.newParticleSystem(image, 100)
     pSystem:setParticleLifetime(0.1, 0.5)
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
+    pSystem:setEmissionArea("normal", 10, 10)
     pSystem:setColors(colors.color1.r, colors.color1.g, colors.color1.b, 255,
                       colors.color2.r, colors.color2.g, colors.color2.b, 255,
                       colors.color3.r, colors.color3.g, colors.color3.b, 0)
