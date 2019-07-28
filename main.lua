@@ -43,8 +43,8 @@ function love.draw()
 
         if debug then
             if touches[p.id] ~= nil then
-                love.graphics.draw(touches[p.id].shape, touch.x,
-                                   touch.y, 0, p.psystem:getSizes(),
+                love.graphics.draw(touches[p.id].shape, touches[p.id].x,
+                                   touches[p.id].y, 0, p.psystem:getSizes(),
                                    p.psystem:getSizes(),
                                    touches[p.id].shape:getWidth() / 2,
                                    touches[p.id].shape:getHeight() / 2)
