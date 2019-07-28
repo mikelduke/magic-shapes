@@ -2,7 +2,7 @@ debug = false
 
 updatetime = 0
 
-explosions = {}
+particles = {}
 touches = {}
 
 mousedown = false
@@ -22,7 +22,7 @@ end
 function love.update(dt)
     updatetime = dt
 
-    updateExplosions(dt)
+    updateParticles(dt)
 end
 
 function love.keypressed(key, scancode, isrepeat)
@@ -38,7 +38,7 @@ end
 function love.draw()
     love.graphics.setColor(1, 1, 1)
 
-    for i, explosion in ipairs(explosions) do
+    for i, explosion in ipairs(particles) do
         love.graphics.draw(explosion.explosion, 0, 0)
 
         if debug then
@@ -101,7 +101,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     explosion:setPosition(x, y)
     explosion:setEmissionRate(20)
     touchExplosion = {explosion = explosion, id = id} -- wrapper table
-    table.insert(explosions, touchExplosion)
+    table.insert(particles, touchExplosion)
     touch.explosion = explosion
 end
 
@@ -146,8 +146,8 @@ function getExplosion(image, colors)
     return pSystem
 end
 
-function updateExplosions(dt)
-    for i, explosion in ipairs(explosions) do
+function updateParticles(dt)
+    for i, explosion in ipairs(particles) do
         explosion.explosion:update(dt)
 
         if touches[explosion.id] == nil then
@@ -155,7 +155,7 @@ function updateExplosions(dt)
         end
 
         if explosion.explosion:getCount() == 0 and touches[explosion.id] == nil then
-            table.remove(explosions, i)
+            table.remove(particles, i)
         end
     end
 end
