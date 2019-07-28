@@ -39,7 +39,7 @@ function love.draw()
     love.graphics.setColor(1, 1, 1)
 
     for i, explosion in ipairs(explosions) do
-        love.graphics.draw(explosion, 0, 0)
+        love.graphics.draw(explosion.explosion, 0, 0)
     end
 
     if debug then
@@ -71,7 +71,7 @@ end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
-    love.system.vibrate(0.1)
+    -- love.system.vibrate(0.1)
     touch = {
         id = id,
         sound = sounds[math.random(1, #sounds)],
@@ -90,21 +90,20 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     local explosion = getExplosion(touch.blast, touch.trails)
     explosion:setPosition(x, y)
     explosion:emit(10)
-    table.insert(explosions, explosion)
+    touchExplosion = {explosion = explosion, id = id} -- wrapper table
+    table.insert(explosions, touchExplosion)
+    touch.explosion = explosion
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
-    love.system.vibrate(0.1)
+    -- love.system.vibrate(0.1)
     -- print("Touch Moved" .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " ..
     --           pressure)
     local touch = touches[id]
 
     love.audio.play(touch.sound)
-
-    local explosion = getExplosion(touch.blast, touch.trails)
-    explosion:setPosition(x, y)
-    explosion:emit(10)
-    table.insert(explosions, explosion)
+    touch.explosion:setPosition(x, y)
+    touch.explosion:emit(10)
 end
 
 function love.touchreleased(id, x, y, dx, dy, pressure)
@@ -123,20 +122,21 @@ function getBlast(size, color)
 end
 
 function getExplosion(image, colors)
-    pSystem = love.graphics.newParticleSystem(image, 10)
+    pSystem = love.graphics.newParticleSystem(image, 100)
     pSystem:setParticleLifetime(0.1, 0.5)
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
     pSystem:setColors(colors.color1.r, colors.color1.g, colors.color1.b, 255,
                       colors.color2.r, colors.color2.g, colors.color2.b, 255,
                       colors.color3.r, colors.color3.g, colors.color3.b, 0)
-    pSystem:setSizes(1, 0.1)
+    pSystem:setSizes(math.random(.5, 3), 0.1)
     return pSystem
 end
 
 function updateExplosions(dt)
     for i, explosion in ipairs(explosions) do
-        explosion:update(dt)
-        if explosion:getCount() == 0 then
+        explosion.explosion:update(dt)
+
+        if explosion.explosion:getCount() == 0 and touches[explosion.id] == nil then
             table.remove(explosions, i)
         end
     end
