@@ -1,4 +1,4 @@
-debug = true
+debug = false
 
 updatetime = 0
 
@@ -20,10 +20,6 @@ function love.load(arg)
 end
 
 function love.update(dt)
-    if love.keyboard.isDown('escape') then
-        love.event.push('quit')
-    end
-
     updatetime = dt
 
     updateExplosions(dt)
@@ -32,6 +28,10 @@ end
 function love.keypressed(key, scancode, isrepeat)
     if key == 'd' and not isrepeat then
         debug = not debug
+    end
+
+    if love.keyboard.isDown('escape') then
+        love.event.push('quit')
     end
 end
 
