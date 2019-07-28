@@ -89,7 +89,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     touch.blast = getBlast(100, touch.trails.color1)
     local explosion = getExplosion(touch.blast, touch.trails)
     explosion:setPosition(x, y)
-    explosion:emit(1)
+    explosion:setEmissionRate(20)
     touchExplosion = {explosion = explosion, id = id} -- wrapper table
     table.insert(explosions, touchExplosion)
     touch.explosion = explosion
@@ -103,7 +103,6 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
 
     love.audio.play(touch.sound)
     touch.explosion:setPosition(x, y)
-    touch.explosion:emit(1)
 end
 
 function love.touchreleased(id, x, y, dx, dy, pressure)
@@ -123,7 +122,7 @@ end
 
 function getExplosion(image, colors)
     pSystem = love.graphics.newParticleSystem(image, 100)
-    pSystem:setParticleLifetime(0.1, math.random(0.1, 2.0))
+    pSystem:setParticleLifetime(0.8, math.random(0.8, 3.0))
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
 
     local area = math.random(80)
@@ -138,6 +137,10 @@ end
 function updateExplosions(dt)
     for i, explosion in ipairs(explosions) do
         explosion.explosion:update(dt)
+
+        if touches[explosion.id] == nil then
+            explosion.explosion:setEmissionRate(0)
+        end
 
         if explosion.explosion:getCount() == 0 and touches[explosion.id] == nil then
             table.remove(explosions, i)
