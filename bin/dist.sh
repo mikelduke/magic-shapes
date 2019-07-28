@@ -2,16 +2,12 @@
 
 ./bin/clean.sh
 
+./bin/assemble.sh
+
 echo "Making .love dist"
 
-mkdir -p dist
-mkdir -p temp
-
-cp -rf *.* temp/
-mkdir temp/assets
-cp -rf assets/ temp/assets
-
-zip -9 -r dist/magic-shapes.love ./temp
-rm -rf temp
+cd temp
+zip -9 -r magic-shapes.love .
+cp magic-shapes.love ../dist
 
 echo 'done'

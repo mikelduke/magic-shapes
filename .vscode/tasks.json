@@ -11,14 +11,14 @@
         {
             "label": "copy to love sync folder",
             "type": "shell",
-            "command": "cp -rf ./ ~/love2d/",
+            "command": "bin/assemble.sh && cp -rf temp/* ~/love2d/",
             "problemMatcher": [],
             "isBackground": true
         },
         {
             "label":"build dist",
             "type": "shell",
-            "command": "bin/dist.sh",
+            "command": "bin/dist.sh && rm -rf temp",
             "problemMatcher":[],
         }
     ]
