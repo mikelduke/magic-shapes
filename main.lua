@@ -42,7 +42,10 @@ function love.draw()
         love.graphics.draw(p.psystem, 0, 0)
 
         if debug then
-            if touches[p.id] ~= nil then
+            if p.id ~= nil and touches[p.id] ~= nil then
+                love.graphics.print("p.id: " .. tostring(p.id) .. " p.psystem:getSizes() " ..
+                                        p.psystem:getSizes(), 0, i * 10 + 20)
+
                 love.graphics.draw(touches[p.id].shape, touches[p.id].x,
                                    touches[p.id].y, 0, p.psystem:getSizes(),
                                    p.psystem:getSizes(),
@@ -82,7 +85,7 @@ end
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
     -- love.system.vibrate(0.1)
-    touch = {
+    local touch = {
         id = id,
         sound = sounds[math.random(1, #sounds)],
         x = x,
@@ -91,18 +94,21 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
             color1 = {r = math.random(), g = math.random(), b = math.random()},
             color2 = {r = math.random(), g = math.random(), b = math.random()},
             color3 = {r = math.random(), g = math.random(), b = math.random()}
-        }
+        },
+        shape = nil,
+        psystem = nil
     }
+
     love.audio.play(touch.sound)
-    touches[id] = touch
 
     touch.shape = getShape(100, touch.trails.color1)
     local particle = getParticleSystem(touch.shape, touch.trails)
     particle:setPosition(x, y)
     particle:setEmissionRate(20)
     touchParticle = {psystem = particle, id = id} -- wrapper table
-    table.insert(particles, touchParticle)
     touch.psystem = particle
+    touches[id] = touch
+    table.insert(particles, touchParticle)
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
@@ -133,7 +139,7 @@ function getShape(size, color)
 end
 
 function getParticleSystem(image, colors)
-    pSystem = love.graphics.newParticleSystem(image, 100)
+    local pSystem = love.graphics.newParticleSystem(image, 100)
     pSystem:setParticleLifetime(0.8, math.random(0.8, 3.0))
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
 
