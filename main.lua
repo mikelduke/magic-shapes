@@ -15,6 +15,8 @@ sounds = {
     love.audio.newSource("assets/Jump_00.mp3", "static")
 }
 
+shapeSides = {3, 4, 5, 6, 7, 8, 100}
+
 function love.load(arg)
     print("Touch it!")
 end
@@ -43,12 +45,14 @@ function love.draw()
 
         if debug then
             if p.id ~= nil and touches[p.id] ~= nil then
-                love.graphics.print("p.id: " .. tostring(p.id) .. " p.psystem:getSizes() " ..
-                                        p.psystem:getSizes(), 0, i * 10 + 20)
+                love.graphics.print("p.id: " .. tostring(p.id) ..
+                                        " p.psystem:getSizes() " ..
+                                        p.psystem:getSizes() .. " rotation: " ..
+                                        touches[p.id].rotation, 0, i * 10 + 20)
 
                 love.graphics.draw(touches[p.id].shape, touches[p.id].x,
-                                   touches[p.id].y, 0, p.psystem:getSizes(),
-                                   p.psystem:getSizes(),
+                                   touches[p.id].y, touches[p.id].rotation,
+                                   p.psystem:getSizes(), p.psystem:getSizes(),
                                    touches[p.id].shape:getWidth() / 2,
                                    touches[p.id].shape:getHeight() / 2)
             end
@@ -96,7 +100,8 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
             color3 = {r = math.random(), g = math.random(), b = math.random()}
         },
         shape = nil,
-        psystem = nil
+        psystem = nil,
+        rotation = math.random(0, 360)
     }
 
     love.audio.play(touch.sound)
@@ -105,6 +110,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     local particle = getParticleSystem(touch.shape, touch.trails)
     particle:setPosition(x, y)
     particle:setEmissionRate(20)
+    particle:setRotation(touch.rotation)
     touchParticle = {psystem = particle, id = id} -- wrapper table
     touch.psystem = particle
     touches[id] = touch
@@ -133,7 +139,15 @@ function getShape(size, color)
     local shape = love.graphics.newCanvas(size, size)
     love.graphics.setCanvas(shape)
     love.graphics.setColor(color.r, color.g, color.b, 255)
-    love.graphics.circle("fill", size / 2, size / 2, size / 2)
+
+    local mode = "fill"
+    if math.random(1, 10) > 6 then
+        mode = "line"
+        love.graphics.setLineWidth(math.random(10, 50))
+    end
+
+    love.graphics.circle(mode, size / 2, size / 2, size / 2,
+                         shapeSides[math.random(#shapeSides)])
     love.graphics.setCanvas()
     return shape
 end
