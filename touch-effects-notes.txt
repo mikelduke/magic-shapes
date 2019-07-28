@@ -1,9 +1,0 @@
-notes
-
-https://opengameart.org/content/8-bit-sound-effects-library
-
-Attribute Little Robot Sound Factory, and provide this link where possible: www.littlerobotsoundfactory.com
-
-particle animation from 
-https://dev.to/jeansberg/make-a-shooter-in-lualove2d---animations-and-particles
-
