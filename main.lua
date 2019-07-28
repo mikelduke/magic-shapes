@@ -40,6 +40,16 @@ function love.draw()
 
     for i, explosion in ipairs(explosions) do
         love.graphics.draw(explosion.explosion, 0, 0)
+
+        if debug then
+            if touches[explosion.id] ~= nil then
+                love.graphics.draw(touches[explosion.id].blast, touch.x,
+                                   touch.y, 0, explosion.explosion:getSizes(),
+                                   explosion.explosion:getSizes(),
+                                   touches[explosion.id].blast:getWidth() / 2,
+                                   touches[explosion.id].blast:getHeight() / 2)
+            end
+        end
     end
 
     if debug then
@@ -102,6 +112,8 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
     local touch = touches[id]
 
     love.audio.play(touch.sound)
+    touch.x = x
+    touch.y = y
     touch.explosion:setPosition(x, y)
 end
 
