@@ -71,7 +71,7 @@ end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- print("Touch " .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " .. pressure)
-
+    love.system.vibrate(0.1)
     touch = {
         id = id,
         sound = sounds[math.random(1, #sounds)],
@@ -94,6 +94,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
+    love.system.vibrate(0.1)
     -- print("Touch Moved" .. tostring(id) .. ": " .. x .. "," .. y .. "dx,dy: " .. dx .. "," .. dy .. " pressure: " ..
     --           pressure)
     local touch = touches[id]
