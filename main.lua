@@ -15,7 +15,7 @@ sounds = {
     love.audio.newSource("assets/Jump_00.mp3", "static")
 }
 
-shapeSides = {3, 4, 5, 6, 7, 8, 100}
+shapeSides = {3, 4, 5, 6, 8, 100}
 
 function love.load(arg)
     print("Touch it!")
@@ -111,6 +111,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     particle:setPosition(x, y)
     particle:setEmissionRate(20)
     particle:setRotation(touch.rotation)
+    particle:setRelativeRotation(true)
     touchParticle = {psystem = particle, id = id} -- wrapper table
     touch.psystem = particle
     touches[id] = touch
