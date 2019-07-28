@@ -38,16 +38,16 @@ end
 function love.draw()
     love.graphics.setColor(1, 1, 1)
 
-    for i, explosion in ipairs(particles) do
-        love.graphics.draw(explosion.explosion, 0, 0)
+    for i, p in ipairs(particles) do
+        love.graphics.draw(p.psystem, 0, 0)
 
         if debug then
-            if touches[explosion.id] ~= nil then
-                love.graphics.draw(touches[explosion.id].shape, touch.x,
-                                   touch.y, 0, explosion.explosion:getSizes(),
-                                   explosion.explosion:getSizes(),
-                                   touches[explosion.id].shape:getWidth() / 2,
-                                   touches[explosion.id].shape:getHeight() / 2)
+            if touches[p.id] ~= nil then
+                love.graphics.draw(touches[p.id].shape, touch.x,
+                                   touch.y, 0, p.psystem:getSizes(),
+                                   p.psystem:getSizes(),
+                                   touches[p.id].shape:getWidth() / 2,
+                                   touches[p.id].shape:getHeight() / 2)
             end
         end
     end
@@ -97,12 +97,12 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     touches[id] = touch
 
     touch.shape = getShape(100, touch.trails.color1)
-    local explosion = getExplosion(touch.shape, touch.trails)
-    explosion:setPosition(x, y)
-    explosion:setEmissionRate(20)
-    touchExplosion = {explosion = explosion, id = id} -- wrapper table
-    table.insert(particles, touchExplosion)
-    touch.explosion = explosion
+    local particle = getParticleSystem(touch.shape, touch.trails)
+    particle:setPosition(x, y)
+    particle:setEmissionRate(20)
+    touchParticle = {psystem = particle, id = id} -- wrapper table
+    table.insert(particles, touchParticle)
+    touch.psystem = particle
 end
 
 function love.touchmoved(id, x, y, dx, dy, pressure)
@@ -114,7 +114,7 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
     love.audio.play(touch.sound)
     touch.x = x
     touch.y = y
-    touch.explosion:setPosition(x, y)
+    touch.psystem:setPosition(x, y)
 end
 
 function love.touchreleased(id, x, y, dx, dy, pressure)
@@ -132,7 +132,7 @@ function getShape(size, color)
     return shape
 end
 
-function getExplosion(image, colors)
+function getParticleSystem(image, colors)
     pSystem = love.graphics.newParticleSystem(image, 100)
     pSystem:setParticleLifetime(0.8, math.random(0.8, 3.0))
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
@@ -147,14 +147,14 @@ function getExplosion(image, colors)
 end
 
 function updateParticles(dt)
-    for i, explosion in ipairs(particles) do
-        explosion.explosion:update(dt)
+    for i, p in ipairs(particles) do
+        p.psystem:update(dt)
 
-        if touches[explosion.id] == nil then
-            explosion.explosion:setEmissionRate(0)
+        if touches[p.id] == nil then
+            p.psystem:setEmissionRate(0)
         end
 
-        if explosion.explosion:getCount() == 0 and touches[explosion.id] == nil then
+        if p.psystem:getCount() == 0 and touches[p.id] == nil then
             table.remove(particles, i)
         end
     end
