@@ -125,7 +125,9 @@ function getExplosion(image, colors)
     pSystem = love.graphics.newParticleSystem(image, 100)
     pSystem:setParticleLifetime(0.1, math.random(0.1, 2.0))
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
-    pSystem:setEmissionArea("normal", 10, 10)
+
+    local area = math.random(80)
+    pSystem:setEmissionArea("normal", area, area)
     pSystem:setColors(colors.color1.r, colors.color1.g, colors.color1.b, 255,
                       colors.color2.r, colors.color2.g, colors.color2.b, 255,
                       colors.color3.r, colors.color3.g, colors.color3.b, 0)
