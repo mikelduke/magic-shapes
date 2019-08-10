@@ -15,7 +15,10 @@ sounds = {
     love.audio.newSource("assets/Jump_00.mp3", "static")
 }
 
-images = {love.graphics.newImage('assets/star-solid.png')}
+images = {
+    love.graphics.newImage('assets/star-solid.png'),
+    love.graphics.newImage('assets/heart.png')
+}
 
 shapeSides = {3, 4, 5, 6, 8, 100}
 
@@ -144,7 +147,7 @@ function getShape(size, color)
     love.graphics.setCanvas(shape)
     love.graphics.setColor(color.r, color.g, color.b, 255)
 
-    if (math.random(1, 10) > 1) then -- chance to draw shape or image
+    if (math.random(1, 10) > 2) then -- chance to draw shape or image
         local mode = "fill"
         if math.random(1, 10) > 6 then
             mode = "line"
