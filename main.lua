@@ -97,17 +97,17 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     -- love.system.vibrate(0.1)
     local touch = {
         id = id,
-        sound = sounds[math.random(1, #sounds)],
+        sound = sounds[love.math.random(1, #sounds)],
         x = x,
         y = y,
         trails = {
-            color1 = {r = math.random(), g = math.random(), b = math.random()},
-            color2 = {r = math.random(), g = math.random(), b = math.random()},
-            color3 = {r = math.random(), g = math.random(), b = math.random()}
+            color1 = {r = love.math.random(), g = love.math.random(), b = love.math.random()},
+            color2 = {r = love.math.random(), g = love.math.random(), b = love.math.random()},
+            color3 = {r = love.math.random(), g = love.math.random(), b = love.math.random()}
         },
         shape = nil,
         psystem = nil,
-        rotation = math.random(0, 360)
+        rotation = love.math.random(0, 360)
     }
 
     love.audio.play(touch.sound)
@@ -147,17 +147,17 @@ function getShape(size, color)
     love.graphics.setCanvas(shape)
     love.graphics.setColor(color.r, color.g, color.b, 255)
 
-    if (math.random(1, 10) > 2) then -- chance to draw shape or image
+    if (love.math.random(1, 10) > 2) then -- chance to draw shape or image
         local mode = "fill"
-        if math.random(1, 10) > 6 then
+        if love.math.random(1, 10) > 6 then
             mode = "line"
-            love.graphics.setLineWidth(math.random(10, 50))
+            love.graphics.setLineWidth(love.math.random(10, 50))
         end
 
         love.graphics.circle(mode, size / 2, size / 2, size / 2,
-                             shapeSides[math.random(#shapeSides)])
+                             shapeSides[love.math.random(#shapeSides)])
     else
-        love.graphics.draw(images[math.random(#images)], 0, 0, 0, .5, .5)
+        love.graphics.draw(images[love.math.random(#images)], 0, 0, 0, .5, .5)
     end
 
     love.graphics.setCanvas()
@@ -166,15 +166,15 @@ end
 
 function getParticleSystem(image, colors)
     local pSystem = love.graphics.newParticleSystem(image, 100)
-    pSystem:setParticleLifetime(0.8, math.random(0.8, 3.0))
+    pSystem:setParticleLifetime(0.8, love.math.random(0.8, 3.0))
     pSystem:setLinearAcceleration(-100, -100, 100, 100)
 
-    local area = math.random(80)
+    local area = love.math.random(80)
     pSystem:setEmissionArea("normal", area, area)
     pSystem:setColors(colors.color1.r, colors.color1.g, colors.color1.b, 255,
                       colors.color2.r, colors.color2.g, colors.color2.b, 255,
                       colors.color3.r, colors.color3.g, colors.color3.b, 0)
-    pSystem:setSizes(math.random(.5, 1.5), 0.1)
+    pSystem:setSizes(love.math.random(.5, 1.5), 0.1)
     return pSystem
 end
 
