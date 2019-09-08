@@ -2,6 +2,7 @@
 
 Love2d game to show particle effects for touchscreen with random sounds to entertain a baby.
 
+[Github](https://github.com/mikelduke/magic-shapes)
 -----
 
 ![Magicshapes](magicshapes.gif?raw=true "Magicshapes")
