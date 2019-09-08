@@ -7,7 +7,7 @@
 echo "Making .love dist"
 
 cd temp
-zip -9 -r magic-shapes.love .
-cp magic-shapes.love ../dist
+zip -9 -r magicshapes.love .
+cp magicshapes.love ../dist
 
 echo 'done'
