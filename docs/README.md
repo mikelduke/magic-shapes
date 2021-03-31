@@ -1,11 +1,15 @@
 # Magic Shapes Particle Effects Touchscreen Game
 
 Love2d game using particle effects for touchscreen with random sounds to entertain a baby.
+
 ----
 
 ![Magicshapes](magicshapes.gif?raw=true "Magicshapes")
 
+Play it with love2d framework, try the apk from the releases, or [check out the love.js demo in your browser](https://mikelduke.github.io/magic-shapes/game/index.html).
+
 Links:
+
 * [Github Repo](https://github.com/mikelduke/magic-shapes)
 * [Github Pages](https://mikelduke.github.io/magic-shapes/)
 * [Android APK Builder](https://github.com/mikelduke/love-android/tree/0.11.x-magicshapes)
