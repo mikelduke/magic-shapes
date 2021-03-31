@@ -23,17 +23,17 @@ jobs:
     # Upload the built applications
     - uses: actions/upload-artifact@v1
       with:
-        name: ${{ steps.love-build.outputs.macos-filename }}
+        name: magicshapes-macos-build
         path: ${{ steps.love-build.outputs.macos-filename }}
     - uses: actions/upload-artifact@v1
       with:
-        name: ${{ steps.love-build.outputs.win32-filename }}
+        name: magicshapes-win32-build
         path: ${{ steps.love-build.outputs.win32-filename }}
     - uses: actions/upload-artifact@v1
       with:
-        name: ${{ steps.love-build.outputs.win64-filename }}
+        name: magicshapes-win64-build
         path: ${{ steps.love-build.outputs.win64-filename }}
     - uses: actions/upload-artifact@v1
       with:
-        name: ${{ steps.love-build.outputs.love-filename }}
+        name: magicshapes-love-build
         path: ${{ steps.love-build.outputs.love-filename }}
