@@ -22,5 +22,17 @@ jobs:
     # Upload the built applications
     - uses: actions/upload-artifact@v1
       with:
-        name: built-applications
-        path: 'release'
+        name: ${{ steps.love-build.outputs.macos-filename }}
+        path: ${{ steps.love-build.outputs.macos-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ steps.love-build.outputs.win32-filename }}
+        path: ${{ steps.love-build.outputs.win32-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ steps.love-build.outputs.win64-filename }}
+        path: ${{ steps.love-build.outputs.win64-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ steps.love-build.outputs.love-filename }}
+        path: ${{ steps.love-build.outputs.love-filename }}
