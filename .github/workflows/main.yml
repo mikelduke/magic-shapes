@@ -38,3 +38,19 @@ jobs:
       with:
         name: magicshapes-love-build
         path: ${{ steps.love-build.outputs.love-filename }}
+    - uses: mikelduke/love.js@master
+      id: love-js-build
+      with:
+        title: 'magicshapes'
+        source_file: ${{ steps.love-build.outputs.love-filename }}
+        result_dir: docs/game
+    - uses: actions/upload-artifact@v1
+      with:
+        name: love-js
+        path: ${{ steps.love-js-build.outputs.love-js-output }}
+    - name: Publish generated content to GitHub Pages
+      uses: tsunematsu21/actions-publish-gh-pages@v1.0.1
+      with:
+        dir: docs
+        branch: gh-pages
+        token: ${{ secrets.ACCESS_TOKEN }}
