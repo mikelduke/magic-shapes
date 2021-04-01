@@ -6,7 +6,7 @@ Love2d game using particle effects for touchscreen with random sounds to enterta
 
 ![Magicshapes](magicshapes.gif?raw=true "Magicshapes")
 
-Play it with love2d framework, try the apk from the releases, or [check out the love.js demo in your browser](https://mikelduke.github.io/magic-shapes/game/index.html).
+Play it with love2d framework, try the apk from the releases, or [check it out in your browser with love-js](https://mikelduke.github.io/magic-shapes/game/).
 
 Links:
 
